@@ -1,0 +1,166 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Shelter API",
+        "description": "API для приюта животных",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8001",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/?path=animals": {
+            "get": {
+                "summary": "Получить всех животных",
+                "tags": ["Animals"],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "name": "Барсик",
+                                        "species": "кот",
+                                        "breed": "дворняга",
+                                        "age": 13,
+                                        "status": "adopted",
+                                        "photo_url": "https://example.com/photo.jpg"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Добавить новое животное",
+                "tags": ["Animals"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "species", "age"],
+                                "properties": {
+                                    "name": {"type": "string", "example": "Барсик"},
+                                    "species": {"type": "string", "example": "кот"},
+                                    "breed": {"type": "string", "example": "дворняга"},
+                                    "age": {"type": "integer", "example": 12},
+                                    "photo_url": {"type": "string", "example": "https://example.com/photo.jpg"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Животное добавлено",
+                        "content": {
+                            "application/json": {
+                                "example": {"success": true, "id": 9}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/?path=animals/{id}": {
+            "get": {
+                "summary": "Получить животное по ID",
+                "tags": ["Animals"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные животного",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "id": 1,
+                                    "name": "Барсик",
+                                    "species": "кот",
+                                    "status": "adopted"
+                                }
+                            }
+                        }
+                    },
+                    "404": {"description": "Животное не найдено"}
+                }
+            },
+            "put": {
+                "summary": "Обновить животное",
+                "tags": ["Animals"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "species": {"type": "string"},
+                                    "breed": {"type": "string"},
+                                    "age": {"type": "integer"},
+                                    "status": {"type": "string", "enum": ["waiting", "adopted"]},
+                                    "photo_url": {"type": "string"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Животное обновлено",
+                        "content": {
+                            "application/json": {
+                                "example": {"success": true}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Удалить животное",
+                "tags": ["Animals"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Животное удалено",
+                        "content": {
+                            "application/json": {
+                                "example": {"success": true}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
